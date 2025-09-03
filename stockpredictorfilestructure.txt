@@ -1,0 +1,66 @@
+stock_predictor_sprint/
+│
+├── 📁 backend/
+│   ├── 📁 api/
+│   │   ├── __init__.py
+│   │   ├── endpoints.py
+│   │   ├── main.py
+│   │   └── websockets.py
+│   │
+│   ├── 📁 config/
+│   │   ├── __init__.py
+│   │   ├── model_config.json
+│   │   └── settings.py
+│   │
+│   ├── 📁 ingestion/
+│   │   ├── __init__.py
+│   │   ├── macro_ingestor.py
+│   │   ├── news_ingestor.py
+│   │   └── price_ingestor.py
+│   │
+│   ├── 📁 ml_models/
+│   │   ├── __init__.py
+│   │   ├── feature_engineering.py
+│   │   ├── predict.py
+│   │   ├── train_model.py
+│   │   └── validate_model.py
+│   │
+│   ├── 📁 monitoring/
+│   │   ├── __init__.py
+│   │   └── drift_monitor.py
+│   │
+│   ├── 📁 trading_logic/
+│   │   ├── __init__.py
+│   │   └── generate_recommendation.py
+│   │
+│   ├── 📁 utils/
+│   │   ├── __init__.py
+│   │   ├── corporate_action_handler.py
+│   │   ├── database_manager.py
+│   │   └── model_loader.py
+│   │
+│   ├── Dockerfile
+│   └── requirements.txt
+│
+├── 📁 frontend/
+│   ├── 📁 app/
+│   │   ├── page.js
+│   │   └── layout.js
+│   │
+│   ├── 📁 components/
+│   │   ├── StockChart.js
+│   │   ├── PredictionDisplay.js
+│   │   └── StockSelector.js
+│   │
+│   ├── 📁 hooks/
+│   │   └── useWebSocket.js
+│   │
+│   ├── 📁 lib/
+│   │   └── api.js
+│   │
+│   ├── Dockerfile
+│   └── package.json
+│
+├── .gitignore
+├── docker-compose.yml
+└── README.md

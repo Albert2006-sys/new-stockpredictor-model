@@ -1,0 +1,62 @@
+Project Title: Real-Time Dual-Model Stock Analysis Engine
+1. Project Context & Mission
+The Mission: To build a high-frequency, automated stock analysis system that goes beyond simple prediction. The goal is to create a decision-support engine that emulates the workflow of a professional trader by synthesizing multiple layers of information in real-time. This system will continuously ingest live market data for 20 selected stocks, process it, and feed it into two distinct deep learning models (an LSTM and a Transformer) to generate a high-confidence trading recommendation. The entire process, from data acquisition to user display, is designed to happen with a delay of only a few seconds.
+
+The Philosophy: The system is built on the principle of separation of concerns. Instead of one giant program, we have a network of small, specialized services that each do one job exceptionally well. This makes the system more robust, scalable, and easier to debug.
+
+2. Architectural Overview & Component Integration
+Imagine our project as a digital factory with different assembly lines. Here’s how they all connect.
+
+Stage 1: The Foundation - Continuous Data Ingestion
+This is the factory's loading dock, running 24/7 to bring in raw materials.
+
+How it Works: The three scripts in the ingestion/ folder (price_ingestor.py, news_ingestor.py, macro_ingestor.py) are the factory's workers. They are standalone, continuously running services. Their only job is to fetch raw data from external sources (yfinance, News APIs, FRED).
+
+Integration Point: As soon as these workers get new data, they immediately write it into the central warehouse: the TimescaleDB database. They use the functions provided by utils/database_manager.py to do this. This is a one-way flow of information: Ingestors -> Database. They don't know or care what happens to the data after they store it.
+
+Stage 2: The Intelligence Engine - Overnight Model Training
+This is the factory's "Research & Development" department. It works overnight, after the market closes, to build a better engine for the next day.
+
+How it Works: A scheduled task (cron job) triggers the main ml_models/train_model.py script. This script is the master craftsman.
+
+Integration Points:
+
+Data Cleaning: It first calls the utils/corporate_action_handler.py to look for any stock splits or dividends from the previous day and adjusts all historical prices in the database to maintain data integrity.
+
+Feature Creation: It then reads the clean, raw data from the database and uses the logic in ml_models/feature_engineering.py to transform it into a rich, informative feature set.
+
+Labeling & Training: It uses the Triple-Barrier Method to create the "UP", "DOWN", "NEUTRAL" labels for price movement. It then trains both the LSTM and Transformer models on this feature-rich, labeled data.
+
+Validation: After training the new "Challenger" models, it runs the ml_models/validate_model.py script. This script pits the new models against the current "Champion" models (whose locations are listed in config/model_config.json). If the Challengers perform better on a validation set, this script updates model_config.json to make them the new Champions. This is a critical hand-off.
+
+Stage 3: The Live Assembly Line - Real-Time Prediction
+This is the main factory floor, operating at high speed during market hours. This is where the live analysis happens, orchestrated by the FastAPI Backend.
+
+How it Works: The api/websockets.py service contains a high-speed loop. This loop is the assembly line's conveyor belt.
+
+Integration Points:
+
+Get Latest Data: Every few seconds, the loop queries the TimescaleDB for the most recent 60 minutes of feature-ready data.
+
+Load Champion Models: It uses utils/model_loader.py to read the config/model_config.json file and load the current champion LSTM and Transformer models into memory.
+
+Make Predictions: It sends the latest data to ml_models/predict.py, which uses the loaded models to get two separate, probabilistic predictions.
+
+Synthesize Recommendation: It passes both of these predictions to trading_logic/generate_recommendation.py. This script acts as the "quality control" manager, applying the dual-confirmation logic to produce a final, high-confidence "Buy/Sell/Hold" recommendation.
+
+Push to User: Finally, the WebSocket pushes the complete package (latest price, predictions, and final recommendation) to the connected Next.js frontend.
+
+Stage 4: The Showroom - Frontend Presentation
+This is the customer-facing showroom where the final product is displayed.
+
+How it Works: The Next.js application, running in the user's browser, maintains a persistent connection to the backend via the WebSocket.
+
+Integration Points:
+
+Initial State: When the page first loads, the frontend/lib/api.js makes a one-time REST call to the api/endpoints.py to fetch a large chunk of historical data to populate the main chart.
+
+Live Updates: The frontend/hooks/useWebSocket.js hook listens for new JSON packages being pushed from the backend.
+
+Dynamic Rendering: As new data arrives, the hook updates the application's state. This automatically triggers the frontend/components/ (like StockChart.js and PredictionDisplay.js) to re-render, appending the new price tick to the chart and flashing the latest prediction on the screen.
+
+In summary, data flows in a continuous cycle: from the outside world via the Ingestors, into the Database, where it's used by the overnight ML Pipeline to build models. During the day, the Live API uses these models to analyze the latest data and pushes the results to the Frontend for you to see. Each piece is independent but integrates seamlessly to create a powerful, real-time analytical engine.
