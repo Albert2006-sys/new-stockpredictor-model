@@ -1,0 +1,234 @@
+Project Context & Integration Overview
+The Mission: To build a high-frequency, automated stock analysis system that continuously ingests live market data for 20 stocks. The system will process this data, feed it into two distinct deep learning models (an LSTM and a Transformer), and generate a high-confidence trading recommendation. The entire process, from data acquisition to user display, is designed to happen in near real-time.
+
+How the Parts Integrate:
+The project is a network of specialized microservices orchestrated by Docker Compose.
+
+The Data Quant (Person 1) builds the foundation, the Ingestion Services, which act as 24/7 workers fetching raw materials and storing them in the central TimescaleDB warehouse.
+
+The ML Engineer (Person 2) acts as the R&D department. They take the raw materials from the database, use Feature Engineering to refine them, and then use the Training Pipeline overnight to build the "brains" of the operation—the LSTM and Transformer models. The validate_model script acts as the quality gate, updating a central model_config.json file.
+
+The Full-Stack Developer (Person 3) builds the live factory floor. The FastAPI Backend is the main assembly line. It reads the model_config.json, loads the active models, and uses them to analyze the latest data from the database. The WebSocket then pushes the final, assembled product (the recommendation) to the Next.js Frontend, which is the public showroom.
+
+Person 1: The Data Quant
+Your Mission: You are the guardian of the data. Your entire focus is on building a resilient, 24/7 pipeline that feeds clean, reliable, and complete data from all external sources into our central database. Your work is the bedrock upon which everything else is built.
+
+File-by-File Specification & Checklist
+1. backend/utils/database_manager.py
+Context: This file is the single, universal gateway to our database. By centralizing all connection logic here, we ensure that every other part of the system interacts with the database in a consistent and secure manner. It prevents code duplication and makes maintenance trivial.
+
+Detailed Description: This module will contain three core functions. create_db_engine() will use SQLAlchemy to establish a connection pool to our TimescaleDB instance using credentials from the settings file. write_to_db() will be a wrapper around the pandas to_sql() method for efficient bulk writes. read_from_db() will be a wrapper around pd.read_sql() for executing queries and returning data as a DataFrame.
+
+Checklist:
+
+[ ] Create create_db_engine() function.
+
+[ ] Create write_to_db() function.
+
+[ ] Create read_from_db() function.
+
+Precaution: Ensure this file reads credentials from config/settings.py and never contains hardcoded secrets.
+
+2. backend/utils/corporate_action_handler.py
+Context: Corporate actions like stock splits create artificial price jumps that can corrupt our historical data and fool our models. This file's purpose is to act as the "data integrity service," programmatically cleaning our historical data to remove these artificial effects.
+
+Detailed Description: This module will have a primary function, run_daily_adjustment(), designed to be run before market open. It will query yfinance for upcoming splits and dividends for our 20 stocks. If any are found, it will trigger specific helper functions that fetch all historical prices for the affected stock, apply the standard adjustment formulas, and overwrite the old data in the database.
+
+Checklist:
+
+[ ] Create a function to fetch upcoming splits and dividends.
+
+[ ] Implement the price/volume adjustment logic for stock splits.
+
+[ ] Implement the price adjustment logic for dividends.
+
+Precaution: Your script must be idempotent (running it twice doesn't apply the same adjustment twice). You'll need a mechanism to track which actions have already been processed.
+
+3. backend/ingestion/price_ingestor.py
+Context: This is the real-time heartbeat of the entire system. It's a dedicated, standalone service whose only job is to get 1-minute price data into the database as reliably and quickly as possible.
+
+Detailed Description: This script will be an infinite loop. Inside, it will poll yfinance for the latest data for all 20 stocks. It will maintain an in-memory dictionary to track the last timestamp received for each stock to detect data gaps. Gaps are added to a "backfill queue." After market hours, a separate function will process this queue to ensure a complete dataset for overnight training.
+
+Checklist:
+
+[ ] Implement the main polling loop.
+
+[ ] Add a time.sleep() to respect API rate limits.
+
+[ ] Implement the stateful gap detection logic.
+
+[ ] Implement the post-market backfill function.
+
+[ ] Wrap the main loop in a robust try-except block to ensure 24/7 operation.
+
+Precaution: Log all errors. This service must not fail silently.
+
+4. backend/ingestion/news_ingestor.py & macro_ingestor.py
+Context: These files provide the crucial non-price context that helps our models understand why the market might be moving. They are the qualitative and economic inputs.
+
+Detailed Description: news_ingestor.py will be a continuous service that queries a News API, calculates a sentiment score for new articles using a pre-trained NLP model, and stores the results. macro_ingestor.py is a simpler script, run once daily, to fetch key economic indicators from FRED.
+
+Checklist:
+
+[ ] Complete the news_ingestor.py service.
+
+[ ] Complete the macro_ingestor.py script.
+
+Precaution: The NLP model in the news ingestor can be memory-intensive. Load it once on startup, not inside the loop.
+
+Person 2: The ML Engineer
+Your Mission: You are the intelligence of the project. You transform the raw data provided by the Quant into predictive power. You own the entire machine learning lifecycle: feature engineering, model training, validation, and monitoring.
+
+File-by-File Specification & Checklist
+1. backend/ml_models/feature_engineering.py
+Context: Raw data is noisy. This file's purpose is to act as a refinery, transforming the raw price, sentiment, and macro data into a structured, feature-rich format that our deep learning models can effectively learn from.
+
+Detailed Description: This module will contain a master function, create_features(), which takes a raw data DataFrame. It will use libraries like pandas_ta to calculate technical indicators (RSI, MACD, etc.), extract time-based features (hour of day, etc.), and align the latest sentiment and macro data to each price tick.
+
+Checklist:
+
+[ ] Implement technical indicator calculations.
+
+[ ] Implement time-based feature extraction.
+
+[ ] Implement logic to align contextual (news/macro) data.
+
+[ ] Add a feature scaling step (e.g., MinMaxScaler).
+
+Precaution: Ensure all feature calculations are causal (use only past data) to prevent lookahead bias.
+
+2. backend/ml_models/train_model.py
+Context: This is the heart of the R&D department. It's the overnight script that builds the "brains" of the operation for the next trading day.
+
+Detailed Description: This script orchestrates the entire training process. It loads clean data, calls the feature engineering logic, and then implements the Triple-Barrier Method to create the UP/DOWN/NEUTRAL movement labels. It then defines, compiles, and trains both the LSTM and Transformer TensorFlow models. Finally, it uses the TFLiteConverter to save the final, optimized .tflite model files.
+
+Checklist:
+
+[ ] Implement the Triple-Barrier Method labeling function.
+
+[ ] Define the TensorFlow architecture for the LSTM model.
+
+[ ] Define the TensorFlow architecture for the Transformer model.
+
+[ ] Implement the training loop with callbacks like Early Stopping.
+
+[ ] Add the final step to convert and save both models to .tflite.
+
+Precaution: You must use a strict, chronological train/validation split. A random split is a fatal flaw for time-series models.
+
+3. backend/ml_models/validate_model.py
+Context: This is the automated quality control gate. It prevents a poorly trained model from ever reaching production. It formalizes the "Champion vs. Challenger" paradigm.
+
+Detailed Description: This script loads the newly trained "Challenger" models and the current "Champion" models (from model_config.json). It evaluates both on a held-out validation dataset. If a Challenger's performance (e.g., F1-Score) is demonstrably better, this script overwrites the config/model_config.json file to promote the Challenger.
+
+Checklist:
+
+[ ] Implement logic to load both Champion and Challenger models.
+
+[ ] Implement the performance evaluation logic on a validation set.
+
+[ ] Implement the decision logic to declare a winner.
+
+[ ] Implement the final step to overwrite model_config.json.
+
+Precaution: The validation dataset must be data the models have never been trained on.
+
+4. backend/monitoring/drift_monitor.py
+Context: Markets change. A model trained on last month's data might fail in this month's volatility. This service is the early warning system that protects against silent model failure.
+
+Detailed Description: This is a continuously running service that monitors the live system. It checks for data drift (by comparing statistics of live data vs. training data) and concept drift (by watching for a sustained drop in the live model's prediction confidence). If severe drift is detected, it triggers a rollback by rewriting model_config.json to a previous, stable version.
+
+Checklist:
+
+[ ] Implement data drift detection logic.
+
+[ ] Implement concept drift detection logic.
+
+[ ] Implement the automated rollback trigger.
+
+Precaution: Set the drift thresholds carefully to avoid false alarms during normal market volatility.
+
+Person 3: The Full-Stack Developer
+Your Mission: You are the architect of the application. You build the high-performance services that consume the ML models and deliver their insights to the user through a fast, modern, real-time web interface. You own the user experience from end to end.
+
+File-by-File Specification & Checklist
+1. backend/api/ (all files)
+Context: This is the central nervous system of the application, acting as the bridge between the complex backend and the sleek frontend.
+
+Detailed Description: main.py starts the FastAPI server. endpoints.py provides the REST route for historical data. websockets.py is the most critical part, containing the high-speed loop that gets the latest data, calls the prediction and recommendation logic, and pushes the final JSON package to all connected clients.
+
+Checklist:
+
+[ ] Set up the main FastAPI app in main.py.
+
+[ ] Build the GET /stocks/{ticker}/historical endpoint in endpoints.py.
+
+[ ] Implement the connection manager and the main "push" loop in websockets.py.
+
+Precaution: All code in the API, especially the WebSocket loop, must be fully asynchronous (async/await) to prevent blocking and ensure high performance.
+
+2. backend/utils/model_loader.py & backend/ml_models/predict.py
+Context: These files decouple the live API from the ML training process. The API doesn't need to know how models are trained; it only needs a reliable way to load and use them.
+
+Detailed Description: model_loader.py contains one function, load_active_models(), which reads model_config.json and returns the loaded TFLite interpreter objects. predict.py contains make_prediction(), which takes a loaded interpreter and a data sequence and returns the raw prediction (label and probabilities).
+
+Checklist:
+
+[ ] Complete the load_active_models() function.
+
+[ ] Complete the make_prediction() function.
+
+Precaution: These functions must be lightweight and fast. They are in the critical path of every live prediction.
+
+3. backend/trading_logic/generate_recommendation.py
+Context: Raw model probabilities are not user-friendly. This file translates the statistical output of the models into clear, actionable advice.
+
+Detailed Description: This module's main function, get_trade_recommendation(), takes the outputs from both the LSTM and Transformer models. It implements the "dual-model confirmation" logic (e.g., only issue a "Buy" if both models agree with high confidence) and formats the final recommendation.
+
+Checklist:
+
+[ ] Implement the dual-model confirmation logic.
+
+[ ] Format the output recommendation object.
+
+[ ] Crucially, add a disclaimer to every recommendation.
+
+Precaution: The logic here should be simple and transparent. The value is in combining the models, not in adding another layer of complexity.
+
+4. frontend/ (Entire Directory)
+Context: This is the showroom. Its purpose is to present the complex, high-frequency data from the backend in a clean, intuitive, and performant user interface.
+
+Detailed Description: hooks/useWebSocket.js is the heart of the real-time functionality, managing the connection and state. The components/ are the visual building blocks (StockChart, PredictionDisplay). app/page.js assembles these components into the final dashboard.
+
+Checklist:
+
+[ ] Build the REST data fetching logic in lib/api.js.
+
+[ ] Implement the useWebSocket.js custom hook.
+
+[ ] Build all the necessary React components.
+
+[ ] Assemble the main page layout.
+
+Precaution: Performance is key. Use React's memoization and state management features to ensure only the necessary components re-render when new data arrives.
+
+5. docker-compose.yml
+Context: This is the master blueprint for the entire application. It's the key to making a complex, multi-service system easy to start, stop, and manage.
+
+Detailed Description: This YAML file defines every independent service (the database, each ingestor, the API, the frontend). It configures their Docker images, ports, and the shared network that allows them to communicate.
+
+Checklist:
+
+[ ] Define the TimescaleDB service with a persistent volume.
+
+[ ] Define the service for each ingestion script.
+
+[ ] Define the FastAPI backend service.
+
+[ ] Define the Next.js frontend service.
+
+[ ] Configure a shared network.
+
+[ ] Use depends_on to manage startup order.
+
+Precaution: Use environment variables within the Compose file to manage secrets like API keys and database passwords, keeping them out of version control.
