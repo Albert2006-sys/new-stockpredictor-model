@@ -1,0 +1,287 @@
+2025-09-05 23:31:39,381 - INFO - [root:setup_logger:51] - Sophisticated logger configured and ready.
+2025-09-05 23:31:42,158 - ERROR - [root:create_db_engine:37] - Failed to create database engine: (psycopg2.OperationalError) could not translate host name "db" to address: No such host is known. 
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-09-05 23:35:58,063 - INFO - [root:setup_logger:51] - Sophisticated logger configured and ready.
+2025-09-05 23:35:58,063 - INFO - [__main__:<module>:113] - --- STARTING DATA PIPELINE INTEGRATION TEST ---
+2025-09-05 23:36:00,844 - ERROR - [root:create_db_engine:37] - Failed to create database engine: (psycopg2.OperationalError) could not translate host name "db" to address: No such host is known. 
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-09-05 23:38:57,640 - INFO - [root:setup_logger:51] - Sophisticated logger configured and ready.
+2025-09-05 23:38:57,640 - INFO - [__main__:<module>:113] - --- STARTING DATA PIPELINE INTEGRATION TEST ---
+2025-09-05 23:39:00,382 - ERROR - [root:create_db_engine:37] - Failed to create database engine: (psycopg2.OperationalError) could not translate host name "db" to address: No such host is known. 
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-09-05 23:40:46,273 - INFO - [root:setup_logger:51] - Sophisticated logger configured and ready.
+2025-09-05 23:40:46,274 - INFO - [__main__:<module>:113] - --- STARTING DATA PIPELINE INTEGRATION TEST ---
+2025-09-05 23:40:48,992 - ERROR - [root:create_db_engine:37] - Failed to create database engine: (psycopg2.OperationalError) could not translate host name "db" to address: No such host is known. 
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-09-05 23:45:50,171 - INFO - [root:setup_logger:51] - Sophisticated logger configured and ready.
+2025-09-05 23:45:50,172 - INFO - [__main__:<module>:113] - --- STARTING DATA PIPELINE INTEGRATION TEST ---
+2025-09-05 23:45:50,172 - INFO - [backend.utils.database_manager:create_db_engine:21] - Attempting to connect to database with URL: postgresql+psycopg2://user:password@localhost:5432/stock_data
+2025-09-05 23:45:50,396 - INFO - [backend.utils.database_manager:create_db_engine:25] - Database engine created and connection successful.
+2025-09-05 23:45:50,396 - INFO - [__main__:test_db_connection:24] - --- 1. Testing Database Connection ---
+2025-09-05 23:45:50,405 - INFO - [__main__:test_data_io:40] - --- 2. Testing Database I/O Operations ---
+2025-09-05 23:45:50,412 - INFO - [__main__:test_data_io:47] - Writing sample data to 'test_data'...
+2025-09-05 23:45:50,531 - INFO - [backend.utils.database_manager:write_to_db:41] - Successfully wrote 1 rows to 'test_data' table.
+2025-09-05 23:45:50,532 - INFO - [__main__:test_data_io:50] - Reading data back from database...
+2025-09-05 23:45:50,541 - INFO - [backend.utils.database_manager:read_from_db:53] - Successfully read 1 rows with query: SELECT ticker, price, timestamp FROM test_data...
+2025-09-05 23:45:50,571 - INFO - [__main__:test_data_io:61] - Cleaned up test table 'test_data'.
+2025-09-05 23:45:50,572 - INFO - [__main__:test_ingestors:70] - --- 3. Testing Data Ingestors ---
+2025-09-05 23:45:50,572 - INFO - [__main__:test_ingestors:73] - Testing Macro Ingestor...
+2025-09-05 23:45:50,575 - INFO - [__main__:test_ingestors:81] - Testing News Ingestor (will fetch a few articles)...
+2025-09-05 23:45:50,606 - INFO - [backend.ingestion.news_ingestor:run_ingestion_loop:46] - Starting news ingestion loop...
+2025-09-05 23:45:50,607 - INFO - [backend.ingestion.news_ingestor:run_ingestion_loop:52] - Fetching news for Apple (AAPL)...
+2025-09-05 23:45:51,233 - ERROR - [backend.ingestion.news_ingestor:run_ingestion_loop:93] - An error occurred in the news ingestion loop: {'status': 'error', 'code': 'apiKeyInvalid', 'message': 'Your API key is invalid or incorrect. Check your key, or go to https://newsapi.org to create a free API key.'}
+Traceback (most recent call last):
+  File "C:\Users\alent\StockPrediction\backend\ingestion\news_ingestor.py", line 54, in run_ingestion_loop
+    articles = self.newsapi.get_everything(
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\newsapi\newsapi_client.py", line 334, in get_everything
+    raise NewsAPIException(r.json())
+newsapi.newsapi_exception.NewsAPIException: {'status': 'error', 'code': 'apiKeyInvalid', 'message': 'Your API key is invalid or incorrect. Check your key, or go to https://newsapi.org to create a free API key.'}
+2025-09-05 23:45:51,253 - INFO - [backend.ingestion.news_ingestor:run_ingestion_loop:95] - News ingestion cycle complete. Sleeping for 900 seconds.
+2025-09-05 23:52:28,898 - INFO - [root:setup_logger:51] - Sophisticated logger configured and ready.
+2025-09-05 23:52:28,899 - INFO - [__main__:<module>:114] - --- STARTING DATA PIPELINE INTEGRATION TEST ---
+2025-09-05 23:52:28,899 - INFO - [backend.utils.database_manager:create_db_engine:21] - Attempting to connect to database with URL: postgresql+psycopg2://user:password@localhost:5432/stock_data
+2025-09-05 23:52:29,043 - INFO - [backend.utils.database_manager:create_db_engine:25] - Database engine created and connection successful.
+2025-09-05 23:52:29,043 - INFO - [__main__:test_db_connection:26] - --- 1. Testing Database Connection ---
+2025-09-05 23:52:29,046 - INFO - [__main__:test_db_connection:31] - [PASSED] Database connection successful.
+2025-09-05 23:52:29,047 - INFO - [__main__:test_data_io:42] - --- 2. Testing Database I/O Operations ---
+2025-09-05 23:52:29,048 - INFO - [__main__:test_data_io:49] - Writing sample data to 'test_data'...
+2025-09-05 23:52:29,294 - INFO - [backend.utils.database_manager:write_to_db:41] - Successfully wrote 1 rows to 'test_data' table.
+2025-09-05 23:52:29,296 - INFO - [__main__:test_data_io:52] - Reading data back from database...
+2025-09-05 23:52:29,304 - INFO - [backend.utils.database_manager:read_from_db:53] - Successfully read 1 rows with query: SELECT ticker, price, timestamp FROM test_data...
+2025-09-05 23:52:29,307 - INFO - [__main__:test_data_io:58] - [PASSED] Data write, read, and verification successful.
+2025-09-05 23:52:29,314 - INFO - [__main__:test_data_io:62] - Cleaned up test table 'test_data'.
+2025-09-05 23:52:29,314 - INFO - [__main__:test_ingestors:71] - --- 3. Testing Data Ingestors ---
+2025-09-05 23:52:29,315 - INFO - [__main__:test_ingestors:74] - Testing Macro Ingestor...
+2025-09-05 23:52:29,315 - INFO - [backend.utils.database_manager:create_db_engine:21] - Attempting to connect to database with URL: postgresql+psycopg2://user:password@localhost:5432/stock_data
+2025-09-05 23:52:29,409 - INFO - [backend.utils.database_manager:create_db_engine:25] - Database engine created and connection successful.
+2025-09-05 23:52:29,409 - INFO - [backend.ingestion.macro_ingestor:fetch_and_store_macro_data:44] - Fetching macro data from 2025-08-06 to 2025-09-05...
+2025-09-05 23:52:37,072 - INFO - [backend.ingestion.macro_ingestor:fetch_and_store_macro_data:63] - Fetched 76 total macro data points from FRED.
+2025-09-05 23:52:37,073 - INFO - [backend.ingestion.macro_ingestor:fetch_and_store_macro_data:68] - Writing fetched data to temporary table...
+2025-09-05 23:52:37,137 - ERROR - [__main__:test_ingestors:78] - [FAILED] Macro Ingestor failed: (psycopg2.errors.UndefinedTable) relation "macro_indicators" does not exist
+LINE 2:         INSERT INTO macro_indicators (date, indicator, value...
+                            ^
+
+[SQL: 
+        INSERT INTO macro_indicators (date, indicator, value)
+        SELECT t.date, t.indicator, t.value
+        FROM macro_indicators_temp t
+        LEFT JOIN macro_indicators m ON t.date = m.date AND t.indicator = m.indicator
+        WHERE m.indicator IS NULL;
+        ]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+Traceback (most recent call last):
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\sqlalchemy\engine\default.py", line 924, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.errors.UndefinedTable: relation "macro_indicators" does not exist
+LINE 2:         INSERT INTO macro_indicators (date, indicator, value...
+                            ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\alent\StockPrediction\backend\test_pipeline.py", line 75, in test_ingestors
+    fetch_and_store_macro_data()
+  File "C:\Users\alent\StockPrediction\backend\ingestion\macro_ingestor.py", line 80, in fetch_and_store_macro_data
+    result = conn.execute(text(insert_sql))
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 1418, in execute
+    return meth(
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\sqlalchemy\sql\elements.py", line 515, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 1640, in _execute_clauseelement
+    ret = self._execute_context(
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 2353, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\sqlalchemy\engine\default.py", line 924, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedTable) relation "macro_indicators" does not exist
+LINE 2:         INSERT INTO macro_indicators (date, indicator, value...
+                            ^
+
+[SQL: 
+        INSERT INTO macro_indicators (date, indicator, value)
+        SELECT t.date, t.indicator, t.value
+        FROM macro_indicators_temp t
+        LEFT JOIN macro_indicators m ON t.date = m.date AND t.indicator = m.indicator
+        WHERE m.indicator IS NULL;
+        ]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-09-05 23:52:37,158 - INFO - [__main__:test_ingestors:82] - Testing News Ingestor (will fetch a few articles)...
+2025-09-05 23:52:37,167 - INFO - [backend.ingestion.news_ingestor:run_ingestion_loop:46] - Starting news ingestion loop...
+2025-09-05 23:52:37,168 - INFO - [backend.ingestion.news_ingestor:run_ingestion_loop:52] - Fetching news for Apple (AAPL)...
+2025-09-05 23:52:37,933 - ERROR - [backend.utils.database_manager:read_from_db:56] - Failed to read from database with query 'SELECT url FROM news_sentiment WHERE ticker = 'AAPL' ORDER BY published_at DESC ...': (psycopg2.errors.UndefinedTable) relation "news_sentiment" does not exist
+LINE 1: SELECT url FROM news_sentiment WHERE ticker = 'AAPL' ORDER B...
+                        ^
+
+[SQL: SELECT url FROM news_sentiment WHERE ticker = 'AAPL' ORDER BY published_at DESC LIMIT 100]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-09-05 23:52:37,934 - ERROR - [backend.ingestion.news_ingestor:run_ingestion_loop:93] - An error occurred in the news ingestion loop: (psycopg2.errors.UndefinedTable) relation "news_sentiment" does not exist
+LINE 1: SELECT url FROM news_sentiment WHERE ticker = 'AAPL' ORDER B...
+                        ^
+
+[SQL: SELECT url FROM news_sentiment WHERE ticker = 'AAPL' ORDER BY published_at DESC LIMIT 100]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+Traceback (most recent call last):
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\sqlalchemy\engine\default.py", line 924, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.errors.UndefinedTable: relation "news_sentiment" does not exist
+LINE 1: SELECT url FROM news_sentiment WHERE ticker = 'AAPL' ORDER B...
+                        ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\alent\StockPrediction\backend\ingestion\news_ingestor.py", line 66, in run_ingestion_loop
+    existing_urls = set(read_from_db(query, self.engine)['url'])
+  File "C:\Users\alent\StockPrediction\backend\utils\database_manager.py", line 52, in read_from_db
+    df = pd.read_sql_query(text(query), connection)
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\io\sql.py", line 528, in read_sql_query
+    return pandas_sql.read_query(
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\io\sql.py", line 1848, in read_query
+    result = self.execute(sql, params)
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\io\sql.py", line 1672, in execute
+    return self.con.execute(sql, *args)
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 1418, in execute
+    return meth(
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\sqlalchemy\sql\elements.py", line 515, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 1640, in _execute_clauseelement
+    ret = self._execute_context(
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 2353, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\sqlalchemy\engine\default.py", line 924, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedTable) relation "news_sentiment" does not exist
+LINE 1: SELECT url FROM news_sentiment WHERE ticker = 'AAPL' ORDER B...
+                        ^
+
+[SQL: SELECT url FROM news_sentiment WHERE ticker = 'AAPL' ORDER BY published_at DESC LIMIT 100]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-09-05 23:52:37,957 - INFO - [backend.ingestion.news_ingestor:run_ingestion_loop:95] - News ingestion cycle complete. Sleeping for 900 seconds.
+2025-09-05 23:58:20,677 - INFO - [root:setup_logger:51] - Sophisticated logger configured and ready.
+2025-09-05 23:58:20,677 - INFO - [__main__:<module>:114] - --- STARTING DATA PIPELINE INTEGRATION TEST ---
+2025-09-05 23:58:20,677 - INFO - [backend.utils.database_manager:create_db_engine:21] - Attempting to connect to database with URL: postgresql+psycopg2://user:password@localhost:5432/stock_data
+2025-09-05 23:58:20,839 - INFO - [backend.utils.database_manager:create_db_engine:25] - Database engine created and connection successful.
+2025-09-05 23:58:20,839 - INFO - [__main__:test_db_connection:26] - --- 1. Testing Database Connection ---
+2025-09-05 23:58:20,842 - INFO - [__main__:test_db_connection:31] - [PASSED] Database connection successful.
+2025-09-05 23:58:20,843 - INFO - [__main__:test_data_io:42] - --- 2. Testing Database I/O Operations ---
+2025-09-05 23:58:20,846 - INFO - [__main__:test_data_io:49] - Writing sample data to 'test_data'...
+2025-09-05 23:58:21,076 - INFO - [backend.utils.database_manager:write_to_db:41] - Successfully wrote 1 rows to 'test_data' table.
+2025-09-05 23:58:21,076 - INFO - [__main__:test_data_io:52] - Reading data back from database...
+2025-09-05 23:58:21,086 - INFO - [backend.utils.database_manager:read_from_db:53] - Successfully read 1 rows with query: SELECT ticker, price, timestamp FROM test_data...
+2025-09-05 23:58:21,087 - INFO - [__main__:test_data_io:58] - [PASSED] Data write, read, and verification successful.
+2025-09-05 23:58:21,094 - INFO - [__main__:test_data_io:62] - Cleaned up test table 'test_data'.
+2025-09-05 23:58:21,095 - INFO - [__main__:test_ingestors:71] - --- 3. Testing Data Ingestors ---
+2025-09-05 23:58:21,095 - INFO - [__main__:test_ingestors:74] - Testing Macro Ingestor...
+2025-09-05 23:58:21,095 - INFO - [backend.utils.database_manager:create_db_engine:21] - Attempting to connect to database with URL: postgresql+psycopg2://user:password@localhost:5432/stock_data
+2025-09-05 23:58:21,198 - INFO - [backend.utils.database_manager:create_db_engine:25] - Database engine created and connection successful.
+2025-09-05 23:58:21,200 - INFO - [backend.ingestion.macro_ingestor:fetch_and_store_macro_data:44] - Fetching macro data from 2025-08-06 to 2025-09-05...
+2025-09-05 23:58:30,677 - INFO - [backend.ingestion.macro_ingestor:fetch_and_store_macro_data:63] - Fetched 76 total macro data points from FRED.
+2025-09-05 23:58:30,677 - INFO - [backend.ingestion.macro_ingestor:fetch_and_store_macro_data:68] - Writing fetched data to temporary table...
+2025-09-05 23:58:30,738 - INFO - [backend.ingestion.macro_ingestor:fetch_and_store_macro_data:81] - Inserted 76 new macro indicator rows into the database.
+2025-09-05 23:58:30,755 - INFO - [__main__:test_ingestors:76] - [PASSED] Macro Ingestor ran without errors.
+2025-09-05 23:58:30,755 - INFO - [__main__:test_ingestors:82] - Testing News Ingestor (will fetch a few articles)...
+2025-09-05 23:58:30,764 - INFO - [backend.ingestion.news_ingestor:run_ingestion_loop:46] - Starting news ingestion loop...
+2025-09-05 23:58:30,764 - INFO - [backend.ingestion.news_ingestor:run_ingestion_loop:52] - Fetching news for Apple (AAPL)...
+2025-09-05 23:58:31,365 - INFO - [backend.utils.database_manager:read_from_db:53] - Successfully read 0 rows with query: SELECT url FROM news_sentiment WHERE ticker = 'AAPL' ORDER BY published_at DESC ...
+2025-09-05 23:58:31,390 - INFO - [backend.ingestion.news_ingestor:run_ingestion_loop:84] - Found 24 new articles for Apple.
+2025-09-05 23:58:31,392 - INFO - [backend.ingestion.news_ingestor:run_ingestion_loop:52] - Fetching news for Google (GOOGL)...
+2025-09-05 23:58:32,114 - INFO - [backend.utils.database_manager:read_from_db:53] - Successfully read 0 rows with query: SELECT url FROM news_sentiment WHERE ticker = 'GOOGL' ORDER BY published_at DESC...
+2025-09-05 23:58:32,130 - INFO - [backend.ingestion.news_ingestor:run_ingestion_loop:84] - Found 25 new articles for Google.
+2025-09-05 23:58:32,131 - INFO - [backend.ingestion.news_ingestor:run_ingestion_loop:52] - Fetching news for Microsoft (MSFT)...
+2025-09-05 23:58:33,685 - INFO - [backend.utils.database_manager:read_from_db:53] - Successfully read 0 rows with query: SELECT url FROM news_sentiment WHERE ticker = 'MSFT' ORDER BY published_at DESC ...
+2025-09-05 23:58:33,703 - INFO - [backend.ingestion.news_ingestor:run_ingestion_loop:84] - Found 24 new articles for Microsoft.
+2025-09-05 23:58:33,704 - INFO - [backend.ingestion.news_ingestor:run_ingestion_loop:52] - Fetching news for Amazon (AMZN)...
+2025-09-05 23:58:34,131 - INFO - [backend.utils.database_manager:read_from_db:53] - Successfully read 0 rows with query: SELECT url FROM news_sentiment WHERE ticker = 'AMZN' ORDER BY published_at DESC ...
+2025-09-05 23:58:34,149 - INFO - [backend.ingestion.news_ingestor:run_ingestion_loop:84] - Found 25 new articles for Amazon.
+2025-09-05 23:58:34,150 - INFO - [backend.ingestion.news_ingestor:run_ingestion_loop:52] - Fetching news for Tesla (TSLA)...
+2025-09-05 23:58:34,754 - INFO - [backend.utils.database_manager:read_from_db:53] - Successfully read 0 rows with query: SELECT url FROM news_sentiment WHERE ticker = 'TSLA' ORDER BY published_at DESC ...
+2025-09-05 23:58:34,774 - INFO - [backend.ingestion.news_ingestor:run_ingestion_loop:84] - Found 24 new articles for Tesla.
+2025-09-05 23:58:34,840 - ERROR - [backend.utils.database_manager:write_to_db:43] - Failed to write to table 'news_sentiment': (psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "news_sentiment_url_key"
+DETAIL:  Key (url)=(https://economictimes.indiatimes.com/tech/technology/microsoft-set-to-dodge-eu-fine-with-offer-to-unbundle-teams/articleshow/123705096.cms) already exists.
+
+[SQL: INSERT INTO news_sentiment (ticker, headline, url, source, published_at, sentiment_score) VALUES (%(ticker__0)s, %(headline__0)s, %(url__0)s, %(source__0)s, %(published_at__0)s, %(sentiment_score__0)s), (%(ticker__1)s, %(headline__1)s, %(url__1)s, %( ... 13481 characters truncated ... , %(headline__121)s, %(url__121)s, %(source__121)s, %(published_at__121)s, %(sentiment_score__121)s)]
+[parameters: {'sentiment_score__0': 0.5563, 'source__0': 'Realgm.com', 'ticker__0': 'AAPL', 'published_at__0': datetime.datetime(2025, 9, 4, 18, 26, 35, tzinfo=datetime.timezone.utc), 'url__0': 'https://basketball.realgm.com/wiretap/281822/RealGM-Radio-Danny-Cunningham-Haize-On-The-Central-Division', 'headline__0': 'RealGM Radio: Danny Cunningham, Haize On The Central Division', 'sentiment_score__1': -0.1621, 'source__1': 'The Times of India', 'ticker__1': 'AAPL', 'published_at__1': datetime.datetime(2025, 9, 4, 18, 26, 18, tzinfo=datetime.timezone.utc), 'url__1': 'https://economictimes.indiatimes.com/tech/technology/microsoft-set-to-dodge-eu-fine-with-offer-to-unbundle-teams/articleshow/123705096.cms', 'headline__1': 'Microsoft set to dodge EU fine with offer to unbundle teams', 'sentiment_score__2': -0.8519, 'source__2': 'Worldsoccertalk.com', 'ticker__2': 'AAPL', 'published_at__2': datetime.datetime(2025, 9, 4, 18, 25, 57, tzinfo=datetime.timezone.utc), 'url__2': 'https://worldsoccertalk.com/news/trouble-for-argentina-from-lionel-messis-ally-rodrigo-de-paul-to-julian-alvarez-10-argentina-stars-risk-missing-key-ecuador-match/', 'headline__2': 'Trouble for Argentina? From Lionel Messi’s ally Rodrigo De Paul to Julian Alvarez: 10 Argentina stars risk missing key Ecuador match', 'sentiment_score__3': -0.1027, 'source__3': 'Gadgethacks.com', 'ticker__3': 'AAPL', 'published_at__3': datetime.datetime(2025, 9, 4, 18, 25, 49, tzinfo=datetime.timezone.utc), 'url__3': 'https://android.gadgethacks.com/news/tech-antitrust-peak-why-2024-may-mark-end-of-era/', 'headline__3': 'Tech Antitrust Peak: Why 2024 May Mark End of Era', 'sentiment_score__4': 0.4019, 'source__4': 'PC Gamer', 'ticker__4': 'AAPL', 'published_at__4': datetime.datetime(2025, 9, 4, 18, 25, 20, tzinfo=datetime.timezone.utc), 'url__4': 'https://www.pcgamer.com/games/lawsuit-over-roblox-emote-of-charli-xcx-apple-dance-is-amicably-resolved/', 'headline__4': "Lawsuit over Roblox emote of Charli XCX Apple dance is 'amicably resolved'", 'sentiment_score__5': -0.5859, 'source__5': 'The Times of India', 'ticker__5': 'AAPL', 'published_at__5': datetime.datetime(2025, 9, 4, 18, 23, 51, tzinfo=datetime.timezone.utc), 'url__5': 'https://economictimes.indiatimes.com/news/international/us/alleged-iphone-17-video-leaks-online-just-days-before-official-apple-unveil/articleshow/123704294.cms', 'headline__5': 'Alleged iPhone 17 video leaks online just days before official Apple unveil', 'sentiment_score__6': 0.836, 'source__6': 'Thefly.com', 'ticker__6': 'AAPL', 'published_at__6': datetime.datetime(2025, 9, 4, 18, 21, 23, tzinfo=datetime.timezone.utc), 'url__6': 'https://thefly.com/permalinks/entry.php/id4193304/$PRIVATE;MSFT;AAPL;GOOGL;GOOG;AMD-AI-Daily-Google-could-get-important-AI-endorsement-from-Apple', 'headline__6': 'AI Daily: Google could get important AI endorsement from Apple', 'sentiment_score__7': 0.4278, 'source__7': 'Bringatrailer.com', 'ticker__7': 'AAPL', 'published_at__7': datetime.datetime(2025, 9, 4, 18, 20, 7, tzinfo=datetime.timezone.utc), 'url__7': 'https://bringatrailer.com/listing/2019-superlite-gt-r/', 'headline__7': '5.2L Aluminator–Powered Superlite GT-R', 'sentiment_score__8': 0.0, 'source__8': 'Bringatrailer.com' ... 632 parameters truncated ... 'url__113': 'https://www.thewrap.com/jeffrey-katzenberg-kimbal-musk-thegrill-2025/', 'headline__113': 'Jeffrey Katzenberg and Kimbal Musk Take Storytelling to the Skies at TheGrill 2025', 'sentiment_score__114': 0.0, 'source__114': 'CBS News', 'ticker__114': 'TSLA', 'published_at__114': datetime.datetime(2025, 9, 4, 16, 56, 19, tzinfo=datetime.timezone.utc), 'url__114': 'https://www.cbsnews.com/news/trump-hosting-dinner-tech-giants-business-leaders-white-house/', 'headline__114': 'Trump to host dinner with tech giants at the White House', 'sentiment_score__115': 0.6908, 'source__115': 'Electrek', 'ticker__115': 'TSLA', 'published_at__115': datetime.datetime(2025, 9, 4, 16, 26, 12, tzinfo=datetime.timezone.utc), 'url__115': 'http://electrek.co/2025/09/04/tesla-robotaxi-anyone-with-iphone-can-now-download-app-join-waitlist/', 'headline__115': 'Tesla Robotaxi: anyone with iPhone can now download the app and join a waitlist', 'sentiment_score__116': -0.8858, 'source__116': 'Biztoc.com', 'ticker__116': 'TSLA', 'published_at__116': datetime.datetime(2025, 9, 4, 16, 24, 46, tzinfo=datetime.timezone.utc), 'url__116': 'https://biztoc.com/x/594766596e1328d1', 'headline__116': "It's not just Tesla, another EV giant takes a big tumble", 'sentiment_score__117': 0.4404, 'source__117': 'The Times of India', 'ticker__117': 'TSLA', 'published_at__117': datetime.datetime(2025, 9, 4, 16, 15, 31, tzinfo=datetime.timezone.utc), 'url__117': 'https://economictimes.indiatimes.com/news/international/us/trumps-rose-garden-dinner-gates-cook-zuckerberg-to-attend-musk-out-a-new-silicon-valley-alliance-on-the-horizon/articleshow/123702322.cms', 'headline__117': 'Trump’s Rose Garden dinner — Gates, Cook, Zuckerberg to attend, Musk out; a new Silicon Valley alliance on the horizon?', 'sentiment_score__118': -0.9153, 'source__118': 'BBC News', 'ticker__118': 'TSLA', 'published_at__118': datetime.datetime(2025, 9, 4, 16, 13, 30, tzinfo=datetime.timezone.utc), 'url__118': 'https://www.bbc.com/news/articles/c62zre98j85o', 'headline__118': "Man and woman charged after girl's weapons arrest", 'sentiment_score__119': 0.4404, 'source__119': 'Fortune', 'ticker__119': 'TSLA', 'published_at__119': datetime.datetime(2025, 9, 4, 16, 13, 18, tzinfo=datetime.timezone.utc), 'url__119': 'https://fortune.com/crypto/2025/09/04/bitcoin-michael-saylor-sp-500-strategy-microstrategy/', 'headline__119': 'Bitcoin faithful bet on Saylor’s Strategy being added to S&P 500', 'sentiment_score__120': 0.4588, 'source__120': 'Biztoc.com', 'ticker__120': 'TSLA', 'published_at__120': datetime.datetime(2025, 9, 4, 16, 3, 16, tzinfo=datetime.timezone.utc), 'url__120': 'https://biztoc.com/x/53a133d462e8cab7', 'headline__120': 'Tesla Demand Persists in Norway on Brand Loyalty, Cheap Finance', 'sentiment_score__121': -0.4299, 'source__121': 'Business Insider', 'ticker__121': 'TSLA', 'published_at__121': datetime.datetime(2025, 9, 4, 15, 57, 24, tzinfo=datetime.timezone.utc), 'url__121': 'https://www.businessinsider.com/elon-musk-not-invited-trump-rose-garden-ceo-event-2025-9', 'headline__121': "Elon Musk snubbed from invite list for Trump's Rose Garden event with CEOs"}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-09-05 23:58:34,843 - ERROR - [backend.ingestion.news_ingestor:run_ingestion_loop:93] - An error occurred in the news ingestion loop: (psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "news_sentiment_url_key"
+DETAIL:  Key (url)=(https://economictimes.indiatimes.com/tech/technology/microsoft-set-to-dodge-eu-fine-with-offer-to-unbundle-teams/articleshow/123705096.cms) already exists.
+
+[SQL: INSERT INTO news_sentiment (ticker, headline, url, source, published_at, sentiment_score) VALUES (%(ticker__0)s, %(headline__0)s, %(url__0)s, %(source__0)s, %(published_at__0)s, %(sentiment_score__0)s), (%(ticker__1)s, %(headline__1)s, %(url__1)s, %( ... 13481 characters truncated ... , %(headline__121)s, %(url__121)s, %(source__121)s, %(published_at__121)s, %(sentiment_score__121)s)]
+[parameters: {'sentiment_score__0': 0.5563, 'source__0': 'Realgm.com', 'ticker__0': 'AAPL', 'published_at__0': datetime.datetime(2025, 9, 4, 18, 26, 35, tzinfo=datetime.timezone.utc), 'url__0': 'https://basketball.realgm.com/wiretap/281822/RealGM-Radio-Danny-Cunningham-Haize-On-The-Central-Division', 'headline__0': 'RealGM Radio: Danny Cunningham, Haize On The Central Division', 'sentiment_score__1': -0.1621, 'source__1': 'The Times of India', 'ticker__1': 'AAPL', 'published_at__1': datetime.datetime(2025, 9, 4, 18, 26, 18, tzinfo=datetime.timezone.utc), 'url__1': 'https://economictimes.indiatimes.com/tech/technology/microsoft-set-to-dodge-eu-fine-with-offer-to-unbundle-teams/articleshow/123705096.cms', 'headline__1': 'Microsoft set to dodge EU fine with offer to unbundle teams', 'sentiment_score__2': -0.8519, 'source__2': 'Worldsoccertalk.com', 'ticker__2': 'AAPL', 'published_at__2': datetime.datetime(2025, 9, 4, 18, 25, 57, tzinfo=datetime.timezone.utc), 'url__2': 'https://worldsoccertalk.com/news/trouble-for-argentina-from-lionel-messis-ally-rodrigo-de-paul-to-julian-alvarez-10-argentina-stars-risk-missing-key-ecuador-match/', 'headline__2': 'Trouble for Argentina? From Lionel Messi’s ally Rodrigo De Paul to Julian Alvarez: 10 Argentina stars risk missing key Ecuador match', 'sentiment_score__3': -0.1027, 'source__3': 'Gadgethacks.com', 'ticker__3': 'AAPL', 'published_at__3': datetime.datetime(2025, 9, 4, 18, 25, 49, tzinfo=datetime.timezone.utc), 'url__3': 'https://android.gadgethacks.com/news/tech-antitrust-peak-why-2024-may-mark-end-of-era/', 'headline__3': 'Tech Antitrust Peak: Why 2024 May Mark End of Era', 'sentiment_score__4': 0.4019, 'source__4': 'PC Gamer', 'ticker__4': 'AAPL', 'published_at__4': datetime.datetime(2025, 9, 4, 18, 25, 20, tzinfo=datetime.timezone.utc), 'url__4': 'https://www.pcgamer.com/games/lawsuit-over-roblox-emote-of-charli-xcx-apple-dance-is-amicably-resolved/', 'headline__4': "Lawsuit over Roblox emote of Charli XCX Apple dance is 'amicably resolved'", 'sentiment_score__5': -0.5859, 'source__5': 'The Times of India', 'ticker__5': 'AAPL', 'published_at__5': datetime.datetime(2025, 9, 4, 18, 23, 51, tzinfo=datetime.timezone.utc), 'url__5': 'https://economictimes.indiatimes.com/news/international/us/alleged-iphone-17-video-leaks-online-just-days-before-official-apple-unveil/articleshow/123704294.cms', 'headline__5': 'Alleged iPhone 17 video leaks online just days before official Apple unveil', 'sentiment_score__6': 0.836, 'source__6': 'Thefly.com', 'ticker__6': 'AAPL', 'published_at__6': datetime.datetime(2025, 9, 4, 18, 21, 23, tzinfo=datetime.timezone.utc), 'url__6': 'https://thefly.com/permalinks/entry.php/id4193304/$PRIVATE;MSFT;AAPL;GOOGL;GOOG;AMD-AI-Daily-Google-could-get-important-AI-endorsement-from-Apple', 'headline__6': 'AI Daily: Google could get important AI endorsement from Apple', 'sentiment_score__7': 0.4278, 'source__7': 'Bringatrailer.com', 'ticker__7': 'AAPL', 'published_at__7': datetime.datetime(2025, 9, 4, 18, 20, 7, tzinfo=datetime.timezone.utc), 'url__7': 'https://bringatrailer.com/listing/2019-superlite-gt-r/', 'headline__7': '5.2L Aluminator–Powered Superlite GT-R', 'sentiment_score__8': 0.0, 'source__8': 'Bringatrailer.com' ... 632 parameters truncated ... 'url__113': 'https://www.thewrap.com/jeffrey-katzenberg-kimbal-musk-thegrill-2025/', 'headline__113': 'Jeffrey Katzenberg and Kimbal Musk Take Storytelling to the Skies at TheGrill 2025', 'sentiment_score__114': 0.0, 'source__114': 'CBS News', 'ticker__114': 'TSLA', 'published_at__114': datetime.datetime(2025, 9, 4, 16, 56, 19, tzinfo=datetime.timezone.utc), 'url__114': 'https://www.cbsnews.com/news/trump-hosting-dinner-tech-giants-business-leaders-white-house/', 'headline__114': 'Trump to host dinner with tech giants at the White House', 'sentiment_score__115': 0.6908, 'source__115': 'Electrek', 'ticker__115': 'TSLA', 'published_at__115': datetime.datetime(2025, 9, 4, 16, 26, 12, tzinfo=datetime.timezone.utc), 'url__115': 'http://electrek.co/2025/09/04/tesla-robotaxi-anyone-with-iphone-can-now-download-app-join-waitlist/', 'headline__115': 'Tesla Robotaxi: anyone with iPhone can now download the app and join a waitlist', 'sentiment_score__116': -0.8858, 'source__116': 'Biztoc.com', 'ticker__116': 'TSLA', 'published_at__116': datetime.datetime(2025, 9, 4, 16, 24, 46, tzinfo=datetime.timezone.utc), 'url__116': 'https://biztoc.com/x/594766596e1328d1', 'headline__116': "It's not just Tesla, another EV giant takes a big tumble", 'sentiment_score__117': 0.4404, 'source__117': 'The Times of India', 'ticker__117': 'TSLA', 'published_at__117': datetime.datetime(2025, 9, 4, 16, 15, 31, tzinfo=datetime.timezone.utc), 'url__117': 'https://economictimes.indiatimes.com/news/international/us/trumps-rose-garden-dinner-gates-cook-zuckerberg-to-attend-musk-out-a-new-silicon-valley-alliance-on-the-horizon/articleshow/123702322.cms', 'headline__117': 'Trump’s Rose Garden dinner — Gates, Cook, Zuckerberg to attend, Musk out; a new Silicon Valley alliance on the horizon?', 'sentiment_score__118': -0.9153, 'source__118': 'BBC News', 'ticker__118': 'TSLA', 'published_at__118': datetime.datetime(2025, 9, 4, 16, 13, 30, tzinfo=datetime.timezone.utc), 'url__118': 'https://www.bbc.com/news/articles/c62zre98j85o', 'headline__118': "Man and woman charged after girl's weapons arrest", 'sentiment_score__119': 0.4404, 'source__119': 'Fortune', 'ticker__119': 'TSLA', 'published_at__119': datetime.datetime(2025, 9, 4, 16, 13, 18, tzinfo=datetime.timezone.utc), 'url__119': 'https://fortune.com/crypto/2025/09/04/bitcoin-michael-saylor-sp-500-strategy-microstrategy/', 'headline__119': 'Bitcoin faithful bet on Saylor’s Strategy being added to S&P 500', 'sentiment_score__120': 0.4588, 'source__120': 'Biztoc.com', 'ticker__120': 'TSLA', 'published_at__120': datetime.datetime(2025, 9, 4, 16, 3, 16, tzinfo=datetime.timezone.utc), 'url__120': 'https://biztoc.com/x/53a133d462e8cab7', 'headline__120': 'Tesla Demand Persists in Norway on Brand Loyalty, Cheap Finance', 'sentiment_score__121': -0.4299, 'source__121': 'Business Insider', 'ticker__121': 'TSLA', 'published_at__121': datetime.datetime(2025, 9, 4, 15, 57, 24, tzinfo=datetime.timezone.utc), 'url__121': 'https://www.businessinsider.com/elon-musk-not-invited-trump-rose-garden-ceo-event-2025-9', 'headline__121': "Elon Musk snubbed from invite list for Trump's Rose Garden event with CEOs"}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+Traceback (most recent call last):
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 2116, in _exec_insertmany_context
+    dialect.do_execute(
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\sqlalchemy\engine\default.py", line 924, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.errors.UniqueViolation: duplicate key value violates unique constraint "news_sentiment_url_key"
+DETAIL:  Key (url)=(https://economictimes.indiatimes.com/tech/technology/microsoft-set-to-dodge-eu-fine-with-offer-to-unbundle-teams/articleshow/123705096.cms) already exists.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\alent\StockPrediction\backend\ingestion\news_ingestor.py", line 90, in run_ingestion_loop
+    write_to_db(final_df, 'news_sentiment', self.engine)
+  File "C:\Users\alent\StockPrediction\backend\utils\database_manager.py", line 40, in write_to_db
+    df.to_sql(table_name, engine, if_exists=if_exists, index=False)
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\util\_decorators.py", line 333, in wrapper
+    return func(*args, **kwargs)
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\core\generic.py", line 3106, in to_sql
+    return sql.to_sql(
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\io\sql.py", line 844, in to_sql
+    return pandas_sql.to_sql(
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\io\sql.py", line 2030, in to_sql
+    total_inserted = sql_engine.insert_records(
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\io\sql.py", line 1579, in insert_records
+    raise err
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\io\sql.py", line 1570, in insert_records
+    return table.insert(chunksize=chunksize, method=method)
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\io\sql.py", line 1121, in insert
+    num_inserted = exec_insert(conn, keys, chunk_iter)
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\io\sql.py", line 1012, in _execute_insert
+    result = conn.execute(self.table.insert(), data)
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 1418, in execute
+    return meth(
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\sqlalchemy\sql\elements.py", line 515, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 1640, in _execute_clauseelement
+    ret = self._execute_context(
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 1844, in _execute_context
+    return self._exec_insertmany_context(dialect, context)
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _exec_insertmany_context
+    self._handle_dbapi_exception(
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 2353, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\sqlalchemy\engine\base.py", line 2116, in _exec_insertmany_context
+    dialect.do_execute(
+  File "C:\Users\alent\AppData\Local\Programs\Python\Python310\lib\site-packages\sqlalchemy\engine\default.py", line 924, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.IntegrityError: (psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "news_sentiment_url_key"
+DETAIL:  Key (url)=(https://economictimes.indiatimes.com/tech/technology/microsoft-set-to-dodge-eu-fine-with-offer-to-unbundle-teams/articleshow/123705096.cms) already exists.
+
+[SQL: INSERT INTO news_sentiment (ticker, headline, url, source, published_at, sentiment_score) VALUES (%(ticker__0)s, %(headline__0)s, %(url__0)s, %(source__0)s, %(published_at__0)s, %(sentiment_score__0)s), (%(ticker__1)s, %(headline__1)s, %(url__1)s, %( ... 13481 characters truncated ... , %(headline__121)s, %(url__121)s, %(source__121)s, %(published_at__121)s, %(sentiment_score__121)s)]
+[parameters: {'sentiment_score__0': 0.5563, 'source__0': 'Realgm.com', 'ticker__0': 'AAPL', 'published_at__0': datetime.datetime(2025, 9, 4, 18, 26, 35, tzinfo=datetime.timezone.utc), 'url__0': 'https://basketball.realgm.com/wiretap/281822/RealGM-Radio-Danny-Cunningham-Haize-On-The-Central-Division', 'headline__0': 'RealGM Radio: Danny Cunningham, Haize On The Central Division', 'sentiment_score__1': -0.1621, 'source__1': 'The Times of India', 'ticker__1': 'AAPL', 'published_at__1': datetime.datetime(2025, 9, 4, 18, 26, 18, tzinfo=datetime.timezone.utc), 'url__1': 'https://economictimes.indiatimes.com/tech/technology/microsoft-set-to-dodge-eu-fine-with-offer-to-unbundle-teams/articleshow/123705096.cms', 'headline__1': 'Microsoft set to dodge EU fine with offer to unbundle teams', 'sentiment_score__2': -0.8519, 'source__2': 'Worldsoccertalk.com', 'ticker__2': 'AAPL', 'published_at__2': datetime.datetime(2025, 9, 4, 18, 25, 57, tzinfo=datetime.timezone.utc), 'url__2': 'https://worldsoccertalk.com/news/trouble-for-argentina-from-lionel-messis-ally-rodrigo-de-paul-to-julian-alvarez-10-argentina-stars-risk-missing-key-ecuador-match/', 'headline__2': 'Trouble for Argentina? From Lionel Messi’s ally Rodrigo De Paul to Julian Alvarez: 10 Argentina stars risk missing key Ecuador match', 'sentiment_score__3': -0.1027, 'source__3': 'Gadgethacks.com', 'ticker__3': 'AAPL', 'published_at__3': datetime.datetime(2025, 9, 4, 18, 25, 49, tzinfo=datetime.timezone.utc), 'url__3': 'https://android.gadgethacks.com/news/tech-antitrust-peak-why-2024-may-mark-end-of-era/', 'headline__3': 'Tech Antitrust Peak: Why 2024 May Mark End of Era', 'sentiment_score__4': 0.4019, 'source__4': 'PC Gamer', 'ticker__4': 'AAPL', 'published_at__4': datetime.datetime(2025, 9, 4, 18, 25, 20, tzinfo=datetime.timezone.utc), 'url__4': 'https://www.pcgamer.com/games/lawsuit-over-roblox-emote-of-charli-xcx-apple-dance-is-amicably-resolved/', 'headline__4': "Lawsuit over Roblox emote of Charli XCX Apple dance is 'amicably resolved'", 'sentiment_score__5': -0.5859, 'source__5': 'The Times of India', 'ticker__5': 'AAPL', 'published_at__5': datetime.datetime(2025, 9, 4, 18, 23, 51, tzinfo=datetime.timezone.utc), 'url__5': 'https://economictimes.indiatimes.com/news/international/us/alleged-iphone-17-video-leaks-online-just-days-before-official-apple-unveil/articleshow/123704294.cms', 'headline__5': 'Alleged iPhone 17 video leaks online just days before official Apple unveil', 'sentiment_score__6': 0.836, 'source__6': 'Thefly.com', 'ticker__6': 'AAPL', 'published_at__6': datetime.datetime(2025, 9, 4, 18, 21, 23, tzinfo=datetime.timezone.utc), 'url__6': 'https://thefly.com/permalinks/entry.php/id4193304/$PRIVATE;MSFT;AAPL;GOOGL;GOOG;AMD-AI-Daily-Google-could-get-important-AI-endorsement-from-Apple', 'headline__6': 'AI Daily: Google could get important AI endorsement from Apple', 'sentiment_score__7': 0.4278, 'source__7': 'Bringatrailer.com', 'ticker__7': 'AAPL', 'published_at__7': datetime.datetime(2025, 9, 4, 18, 20, 7, tzinfo=datetime.timezone.utc), 'url__7': 'https://bringatrailer.com/listing/2019-superlite-gt-r/', 'headline__7': '5.2L Aluminator–Powered Superlite GT-R', 'sentiment_score__8': 0.0, 'source__8': 'Bringatrailer.com' ... 632 parameters truncated ... 'url__113': 'https://www.thewrap.com/jeffrey-katzenberg-kimbal-musk-thegrill-2025/', 'headline__113': 'Jeffrey Katzenberg and Kimbal Musk Take Storytelling to the Skies at TheGrill 2025', 'sentiment_score__114': 0.0, 'source__114': 'CBS News', 'ticker__114': 'TSLA', 'published_at__114': datetime.datetime(2025, 9, 4, 16, 56, 19, tzinfo=datetime.timezone.utc), 'url__114': 'https://www.cbsnews.com/news/trump-hosting-dinner-tech-giants-business-leaders-white-house/', 'headline__114': 'Trump to host dinner with tech giants at the White House', 'sentiment_score__115': 0.6908, 'source__115': 'Electrek', 'ticker__115': 'TSLA', 'published_at__115': datetime.datetime(2025, 9, 4, 16, 26, 12, tzinfo=datetime.timezone.utc), 'url__115': 'http://electrek.co/2025/09/04/tesla-robotaxi-anyone-with-iphone-can-now-download-app-join-waitlist/', 'headline__115': 'Tesla Robotaxi: anyone with iPhone can now download the app and join a waitlist', 'sentiment_score__116': -0.8858, 'source__116': 'Biztoc.com', 'ticker__116': 'TSLA', 'published_at__116': datetime.datetime(2025, 9, 4, 16, 24, 46, tzinfo=datetime.timezone.utc), 'url__116': 'https://biztoc.com/x/594766596e1328d1', 'headline__116': "It's not just Tesla, another EV giant takes a big tumble", 'sentiment_score__117': 0.4404, 'source__117': 'The Times of India', 'ticker__117': 'TSLA', 'published_at__117': datetime.datetime(2025, 9, 4, 16, 15, 31, tzinfo=datetime.timezone.utc), 'url__117': 'https://economictimes.indiatimes.com/news/international/us/trumps-rose-garden-dinner-gates-cook-zuckerberg-to-attend-musk-out-a-new-silicon-valley-alliance-on-the-horizon/articleshow/123702322.cms', 'headline__117': 'Trump’s Rose Garden dinner — Gates, Cook, Zuckerberg to attend, Musk out; a new Silicon Valley alliance on the horizon?', 'sentiment_score__118': -0.9153, 'source__118': 'BBC News', 'ticker__118': 'TSLA', 'published_at__118': datetime.datetime(2025, 9, 4, 16, 13, 30, tzinfo=datetime.timezone.utc), 'url__118': 'https://www.bbc.com/news/articles/c62zre98j85o', 'headline__118': "Man and woman charged after girl's weapons arrest", 'sentiment_score__119': 0.4404, 'source__119': 'Fortune', 'ticker__119': 'TSLA', 'published_at__119': datetime.datetime(2025, 9, 4, 16, 13, 18, tzinfo=datetime.timezone.utc), 'url__119': 'https://fortune.com/crypto/2025/09/04/bitcoin-michael-saylor-sp-500-strategy-microstrategy/', 'headline__119': 'Bitcoin faithful bet on Saylor’s Strategy being added to S&P 500', 'sentiment_score__120': 0.4588, 'source__120': 'Biztoc.com', 'ticker__120': 'TSLA', 'published_at__120': datetime.datetime(2025, 9, 4, 16, 3, 16, tzinfo=datetime.timezone.utc), 'url__120': 'https://biztoc.com/x/53a133d462e8cab7', 'headline__120': 'Tesla Demand Persists in Norway on Brand Loyalty, Cheap Finance', 'sentiment_score__121': -0.4299, 'source__121': 'Business Insider', 'ticker__121': 'TSLA', 'published_at__121': datetime.datetime(2025, 9, 4, 15, 57, 24, tzinfo=datetime.timezone.utc), 'url__121': 'https://www.businessinsider.com/elon-musk-not-invited-trump-rose-garden-ceo-event-2025-9', 'headline__121': "Elon Musk snubbed from invite list for Trump's Rose Garden event with CEOs"}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-09-05 23:58:34,907 - INFO - [backend.ingestion.news_ingestor:run_ingestion_loop:95] - News ingestion cycle complete. Sleeping for 900 seconds.
