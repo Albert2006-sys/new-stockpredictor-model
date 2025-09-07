@@ -1,0 +1,258 @@
+Project Title: Real-Time Dual-Model Stock Analysis Engine
+
+1. Project Context & Mission
+
+The Mission: To build a high-frequency, automated stock analysis system that goes beyond simple prediction. The goal is to create a decision-support engine that emulates the workflow of a professional trader by synthesizing multiple layers of information in real-time. This system will continuously ingest live market data for 20 selected stocks, process it, and feed it into two distinct deep learning models (an LSTM and a Transformer) to generate a high-confidence trading recommendation. The entire process, from data acquisition to user display, is designed to happen with a delay of only a few seconds.
+
+The Philosophy: The system is built on the principle of separation of concerns. Instead of one giant program, we have a network of small, specialized services that each do one job exceptionally well. This makes the system more robust, scalable, and easier to debug.
+
+2. Architectural Overview & Component Integration
+
+Stage 1:Continuous Data Ingestion
+This is the factory's loading dock, running 24/7 to bring in raw materials.
+
+How it Works: The three scripts in the ingestion/ folder (price_ingestor.py, news_ingestor.py, macro_ingestor.py) are the factory's workers. They are standalone, continuously running services. Their only job is to fetch raw data from external sources (yfinance, News APIs, FRED).
+
+Integration Point: As soon as these workers get new data, they immediately write it into the central warehouse: the TimescaleDB database. They use the functions provided by utils/database_manager.py to do this. This is a one-way flow of information: Ingestors -> Database. They don't know or care what happens to the data after they store it.
+
+Stage 2: Overnight Model Training
+It works overnight, after the market closes, to build a better engine for the next day.
+
+How it Works: A scheduled task (cron job) triggers the main ml_models/train_model.py script. This script is the master craftsman.
+
+Integration Points:
+Data Cleaning: It first calls the utils/corporate_action_handler.py to look for any stock splits or dividends from the previous day and adjusts all historical prices in the database to maintain data integrity.
+
+Feature Creation: It then reads the clean, raw data from the database and uses the logic in ml_models/feature_engineering.py to transform it into a rich, informative feature set.
+
+Labeling & Training: It uses the Triple-Barrier Method to create the "UP", "DOWN", "NEUTRAL" labels for price movement. It then trains both the LSTM and Transformer models on this feature-rich, labeled data.
+
+Validation: After training the new "Challenger" models, it runs the ml_models/validate_model.py script. This script pits the new models against the current "Champion" models (whose locations are listed in config/model_config.json). If the Challengers perform better on a validation set, this script updates model_config.json to make them the new Champions. This is a critical hand-off.
+
+Stage 3:Real-Time Prediction
+
+This is where the live analysis happens, orchestrated by the FastAPI Backend.
+
+How it Works: The api/websockets.py service contains a high-speed loop. This loop is the assembly line's conveyor belt.
+
+Integration Points:
+Get Latest Data: Every few seconds, the loop queries the TimescaleDB for the most recent 60 minutes of feature-ready data.
+
+Load Champion Models: It uses utils/model_loader.py to read the config/model_config.json file and load the current champion LSTM and Transformer models into memory.
+
+Make Predictions: It sends the latest data to ml_models/predict.py, which uses the loaded models to get two separate, probabilistic predictions.
+
+Synthesize Recommendation: It passes both of these predictions to trading_logic/generate_recommendation.py. This script acts as the "quality control" manager, applying the dual-confirmation logic to produce a final, high-confidence "Buy/Sell/Hold" recommendation.
+
+Push to User: Finally, the WebSocket pushes the complete package (latest price, predictions, and final recommendation) to the connected Next.js frontend.
+
+Stage 4:Frontend Presentation
+This is the customer-facing showroom where the final product is displayed.
+
+How it Works: The Next.js application, running in the user's browser, maintains a persistent connection to the backend via the WebSocket.
+
+Integration Points:
+Initial State: When the page first loads, the frontend/lib/api.js makes a one-time REST call to the api/endpoints.py to fetch a large chunk of historical data to populate the main chart.
+
+Live Updates: The frontend/hooks/useWebSocket.js hook listens for new JSON packages being pushed from the backend.
+
+Dynamic Rendering: As new data arrives, the hook updates the application's state. This automatically triggers the frontend/components/ (like StockChart.js and PredictionDisplay.js) to re-render, appending the new price tick to the chart and flashing the latest prediction on the screen.
+
+In summary, data flows in a continuous cycle: from the outside world via the Ingestors, into the Database, where it's used by the overnight ML Pipeline to build models. During the day, the Live API uses these models to analyze the latest data and pushes the results to the Frontend for you to see. Each piece is independent but integrates seamlessly to create a powerful, real-time analytical engine.
+
+File Structure
+stock_predictor_sprint/
+│
+├── 📁 backend/
+│   ├── 📁 api/
+│   │   ├── _init_.py
+│   │   ├── endpoints.py
+│   │   ├── main.py
+│   │   └── websockets.py
+│   │
+│   ├── 📁 config/
+│   │   ├── _init_.py
+│   │   ├── model_config.json
+│   │   └── settings.py
+│   │
+│   ├── 📁 ingestion/
+│   │   ├── _init_.py
+│   │   ├── macro_ingestor.py
+│   │   ├── news_ingestor.py
+│   │   └── price_ingestor.py
+│   │
+│   ├── 📁 ml_models/
+│   │   ├── _init_.py
+│   │   ├── feature_engineering.py
+│   │   ├── predict.py
+│   │   ├── train_model.py
+│   │   └── validate_model.py
+│   │
+│   ├── 📁 monitoring/
+│   │   ├── _init_.py
+│   │   └── drift_monitor.py
+│   │
+│   ├── 📁 trading_logic/
+│   │   ├── _init_.py
+│   │   └── generate_recommendation.py
+│   │
+│   ├── 📁 utils/
+│   │   ├── _init_.py
+│   │   ├── corporate_action_handler.py
+│   │   ├── database_manager.py
+│   │   └── model_loader.py
+│   │
+│   ├── Dockerfile
+│   └── requirements.txt
+│
+├── 📁 frontend/
+│   ├── 📁 app/
+│   │   ├── page.js
+│   │   └── layout.js
+│   │
+│   ├── 📁 components/
+│   │   ├── StockChart.js
+│   │   ├── PredictionDisplay.js
+│   │   └── StockSelector.js
+│   │
+│   ├── 📁 hooks/
+│   │   └── useWebSocket.js
+│   │
+│   ├── 📁 lib/
+│   │   └── api.js
+│   │
+│   ├── Dockerfile
+│   └── package.json
+│
+├── .gitignore
+├── docker-compose.yml
+└── README.md
+
+Machine Learning Part(what ishould do)
+Key Focus: Build and train the deep learning models. This is your most intensive period.
+Checklist:
+[ ] In backend/ml_models/train_model.py:
+[ ] Implement the Triple-Barrier Method to create the price movement labels.
+[ ] Build, train, and evaluate the LSTM model.
+[ ] Build, train, and evaluate the Transformer model.
+[ ] Add the logic to convert and save both trained models to the TensorFlow Lite (.tflite) format.
+[ ] DELIVER: Provide the first versions of lstm_v1.tflite and transformer_v1.tflite to Person 2.
+
+Validation & Automation
+Create the system that decides if a new model is good enough.
+
+Checklist:
+[ ] Write backend/ml_models/validate_model.py. This script must be able to load two models, test them on a validation set, and declare a winner.
+[ ] Implement the logic for the validation script to update the config/model_config.json file.
+[ ] SYNC: Explain the validation logic to Person 2 so they understand how models will be swapped.
+
+Monitoring & Health Checks
+Build the system's immune system.
+Checklist:
+[ ] Write backend/monitoring/drift_monitor.py.
+[ ] Implement the logic for the monitor to trigger a rollback by rewriting the model_config.json file.
+[ ] Write the master script for the daily retraining process and set it up as a cron job.
+
+Testing & Documentation
+Ensure the entire backend pipeline runs flawlessly overnight.
+Checklist:
+[ ] Manually trigger the full retraining and validation pipeline. Debug any issues.
+[ ] Assist Person 2 with any backend-related bugs found during full-system testing.
+[ ] Write the detailed technical sections of the README.md.
+
+Decription on files
+
+backend/ml_models/feature_engineering.py
+
+Core Objective: To transform raw, noisy time-series data into a rich, informative feature set that the deep learning models can learn from. This is where a significant portion of the model's predictive "edge" is created.
+
+Key Components & Logic:
+create_features(raw_price_df): A primary function that takes the raw price DataFrame from the database.
+
+Technical Indicators: Uses libraries like pandas_ta to calculate a wide array of indicators:
+	Momentum: RSI (e.g., 14-period), MACD.
+	Trend: EMA (e.g., 12-period, 26-period).
+	Volatility: Bollinger Bands.
+	Time-Based Features: Extracts features from the timestamp itself, which can capture intraday patterns:
+		minute_of_hour
+		hour_of_day
+		day_of_week
+
+Lagged Features: Creates features based on past values (e.g., the price change over the last 5 minutes).
+
+Inputs: Raw price data from TimescaleDB.
+Outputs: A pandas DataFrame with many new feature columns. This DataFrame is used directly by the train_model.py script.
+
+Critical Precautions & Mindset:
+
+Avoid Lookahead Bias: When creating features like rolling averages, ensure you are only using past data. A "centered" moving average that uses future data will leak information and create a deceptively accurate model that fails in live trading.
+Feature Scaling: All features must be normalized (e.g., using MinMaxScaler from scikit-learn) before being fed into a neural network. The scaling parameters must be "fit" on the training data only and then "transformed" on the validation/test data.
+
+backend/ml_models/train_model.py
+
+Core Objective: To orchestrate the entire machine learning training process. This script is the heart of the "Quant" role. It takes in data, applies labels, trains two sophisticated models, and saves the final, deployable artifacts.
+
+Key Components & Logic:
+Data Loading: Loads a large historical dataset from the database using database_manager.
+Label Creation:
+Implements the Triple-Barrier Method logic. This is a critical function that creates the 1 (Up), -1 (Down), and 0 (Neutral) labels that the models will predict. This is your prediction target.
+Data Preprocessing:
+Calls the create_features function from feature_engineering.py.
+Reshapes the data into sequences (e.g., samples of 60 minutes) required by LSTMs and Transformers.
+Model Building: Defines the architecture for both the LSTM and the Transformer models using the TensorFlow/Keras API. The final layer must be a Dense layer with 3 neurons and a softmax activation function.
+Training: Compiles and trains both models on the prepared data.
+Conversion to TFLite: After training, it takes the final TensorFlow models and uses the TFLiteConverter to create lightweight, optimized .tflite files for fast inference.
+
+Inputs: Historical price data, feature engineering logic.
+Outputs: Two trained model files: lstm_vX.tflite and transformer_vX.tflite.
+
+Critical Precautions & Mindset:
+Time-Based Split: You must split your data chronologically. Train on an older period (e.g., Jan-July) and validate on a more recent period (e.g., August). A random split will destroy the model's validity.
+
+Prevent Overfitting: Use techniques like Dropout layers in your model architecture and Early Stopping callbacks during training to prevent the models from simply memorizing the training data.
+
+backend/ml_models/validate_model.py
+
+Core Objective: To act as the automated quality gatekeeper. This script ensures that a newly trained model is only deployed if it is demonstrably better than the one currently in production.
+Key Components & Logic:
+
+Model Loading: Loads the new "Challenger" models (just trained) and the old "Champion" models (the paths are in model_config.json).
+
+Validation Set: Loads a dedicated, unseen validation dataset (e.g., the most recent week of data).
+
+Performance Comparison: Evaluates both the Champion and Challenger models on the validation set using key metrics (e.g., F1-Score, Precision for the "UP" and "DOWN" classes).
+Decision Logic: If the Challenger's performance is better than the Champion's by a certain threshold (to prevent random churn), it is declared the new Champion.
+Update Config: If there is a new champion, this script overwrites the config/model_config.json file with the path to the new model file.
+
+Inputs: The paths to the old and new model files, and a validation dataset.
+Outputs: An updated model_config.json file.
+
+Critical Precautions & Mindset:
+
+Be Objective: The validation process must be fully automated. Do not manually intervene. The metrics should decide the winner.
+
+Stability over Churn: It's often better to keep a slightly less performant but stable model than to constantly swap to new models that might be overfit to the most recent data. The threshold for declaring a new champion should not be trivial.
+
+backend/monitoring/drift_monitor.py
+
+Core Objective: To be the system's early warning system. It runs in parallel to the main application, watching for signs that the live market is behaving differently from the data the model was trained on.
+
+Key Components & Logic:
+Live Data Monitoring: Connects to the database and monitors the most recent incoming price and feature data.
+Drift Detection:
+Data Drift: Calculates simple statistics (e.g., mean, standard deviation) on a rolling window of live data (e.g., last hour) and compares them to the statistics of the training data. If they diverge significantly, it triggers a data drift alert.
+Concept Drift: Monitors the confidence (probability) of the live predictions being made by the API. If the model's confidence consistently drops, it triggers a concept drift alert.
+Rollback Trigger: If a severe drift is detected and persists, this script will enact the rollback strategy: it will rewrite the model_config.json file to point to the previous stable version of the model.
+
+Inputs: Live data from the database, live predictions.
+Outputs: Logs, alerts, and potentially a modified model_config.json.
+Critical Precautions & Mindset:
+False Alarms: Be careful not to make the drift detection too sensitive, or it will trigger alerts on normal market volatility. The thresholds need to be set carefully.
+This is a Safety Net: This service is your protection against the model failing silently in a changing market. It's a critical component for building trust in the system.
+
+
+networks:: Defines a shared network so all the containers can communicate with each other using their service names (e.g., the api service can connect to the db service at host: db).
+
+Critical Precautions:
+Dependencies: Use depends_on to ensure services start in the correct order (e.g., the api and ingestors should wait for the db to be healthy).
+Environment Variables: Use environment variables within the Compose file to pass configuration (like database credentials) to the services, keeping them out of the code.
